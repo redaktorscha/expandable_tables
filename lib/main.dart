@@ -22,6 +22,96 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class CustomDataSource extends DataTableSource {
+  List<CustomRow> renderData;
+  List<CustomRow> defaultRows;
+  CustomDataSource({required this.renderData, required this.defaultRows});
+
+  void expandChildren(int tappedIndex) {
+    // debugPrint('tappedIndex: $tappedIndex');
+
+    defaultRows[tappedIndex] = defaultRows[tappedIndex]
+        .copyWith(expanded: !defaultRows[tappedIndex].expanded);
+    // debugPrint('tableRows[tappedIndex]: ${tableRows[tappedIndex].expanded}');
+
+    if (defaultRows[tappedIndex].expanded) {
+      defaultRows = defaultRows.map((row) {
+        if (row.parentIndex == tappedIndex) {
+          return row.copyWith(visible: true);
+        }
+        return row;
+      }).toList();
+    } else {
+      final currentParentDepth = defaultRows[tappedIndex].depth;
+      for (int i = tappedIndex + 1; i < defaultRows.length; i++) {
+        if (defaultRows[i].depth == currentParentDepth) {
+          break;
+        }
+
+        if (defaultRows[i].expandable) {
+          defaultRows[i] =
+              defaultRows[i].copyWith(visible: false, expanded: false);
+        } else {
+          defaultRows[i] = defaultRows[i].copyWith(visible: false);
+        }
+      }
+    }
+
+    renderData = defaultRows.where((row) => row.visible).toList();
+    notifyListeners(); // NB!!!!!
+  }
+
+  DataCell getCellWithIconButton(int index, int depth, String label) {
+    return DataCell(Row(children: [
+      SizedBox(width: (20 * depth).toDouble()),
+      IconButton(
+        icon: Icon(Icons.add, size: 20),
+        onPressed: () {
+          expandChildren(index);
+        },
+      ),
+      const SizedBox(width: 10),
+      Text(label)
+    ]));
+  }
+
+  List<DataCell> getCells(CustomRow row) {
+    final firstCell = row.expandable
+        ? getCellWithIconButton(
+            row.index, row.depth, '${row.label} - cell ${row.index}')
+        : DataCell(Row(
+            children: [
+              SizedBox(
+                  width: (20 * row.depth + 50)
+                      .toDouble()), // 50 is size of icon button
+              Text('${row.label} - cell ${row.index}')
+            ],
+          ));
+    return [
+      firstCell,
+      ...List.generate(
+          9, (int index) => DataCell(Text('${row.label} - cell ${index + 1}')))
+    ];
+  }
+
+  @override
+  int get rowCount => renderData.length;
+
+  @override
+  DataRow? getRow(int index) {
+    debugPrint(' getRow(int index: $index');
+    final data = renderData[index];
+    debugPrint('data: ${data.stringify()}');
+    return DataRow.byIndex(index: index, cells: getCells(data));
+  }
+
+  @override
+  bool get isRowCountApproximate => true;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -30,6 +120,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int rowsPerPage = 5;
+
   List<CustomRow> tableRows = [
     CustomRow(
         index: 0,
@@ -209,103 +301,45 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 5.2.2'),
   ];
 
-  List renderRows = [];
+  List<CustomRow> renderRows = [];
 
-  void expandChildren(int tappedIndex) {
-    // debugPrint('tappedIndex: $tappedIndex');
-    setState(() {
-      tableRows[tappedIndex] = tableRows[tappedIndex]
-          .copyWith(expanded: !tableRows[tappedIndex].expanded);
-      // debugPrint('tableRows[tappedIndex]: ${tableRows[tappedIndex].expanded}');
-
-      if (tableRows[tappedIndex].expanded) {
-        tableRows = tableRows.map((row) {
-          if (row.parentIndex == tappedIndex) {
-            return row.copyWith(visible: true);
-          }
-          return row;
-        }).toList();
-      } else {
-        final currentParentDepth = tableRows[tappedIndex].depth;
-        for (int i = tappedIndex + 1; i < tableRows.length; i++) {
-          if (tableRows[i].depth == currentParentDepth) {
-            break;
-          }
-
-          if (tableRows[i].expandable) {
-            tableRows[i] =
-                tableRows[i].copyWith(visible: false, expanded: false);
-          } else {
-            tableRows[i] = tableRows[i].copyWith(visible: false);
-          }
-        }
-      }
-
-      renderRows = tableRows.where((row) => row.visible).toList();
-    });
-  }
-
-  DataCell getCellWithIconButton(int index, int depth, String label) {
-    return DataCell(Row(children: [
-      SizedBox(width: (20 * depth).toDouble()),
-      IconButton(
-        icon: Icon(Icons.add, size: 20),
-        onPressed: () {
-          expandChildren(index);
-        },
-      ),
-      SizedBox(width: 10),
-      Text(label)
-    ]));
-  }
+  DataTableSource dataSource =
+      CustomDataSource(renderData: [], defaultRows: []);
 
   @override
   void initState() {
     setState(() {
       renderRows = [...tableRows].where((row) => row.visible).toList();
+      dataSource =
+          CustomDataSource(renderData: renderRows, defaultRows: tableRows);
     });
 
     super.initState();
   }
 
-  List<DataCell> getCells(CustomRow row) {
-    final firstCell = row.expandable
-        ? getCellWithIconButton(
-            row.index, row.depth, '${row.label} - cell ${row.index}')
-        : DataCell(Row(
-            children: [
-              SizedBox(width: (20 * row.depth + 50).toDouble()), // 50 is size of icon button
-              Text('${row.label} - cell ${row.index}')
-            ],
-          ));
-    return [
-      firstCell,
-      ...List.generate(
-          9, (int index) => DataCell(Text('${row.label} - cell ${index + 1}')))
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('expandable table')),
+      appBar: AppBar(title: const Text('expandable table')),
       body: Row(
         children: [
           Expanded(
               child: SingleChildScrollView(
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
+                  
+                      child: PaginatedDataTable(
+                        source: dataSource,
+                        rowsPerPage: rowsPerPage,
+                        availableRowsPerPage: <int>[5, 10, 20],
                         dataRowMinHeight: 0,
                         columns: List.generate(
                             10,
                             (int index) =>
                                 DataColumn(label: Text('Column $index')),
                             growable: false),
-                        rows: renderRows.map((row) {
-                          return DataRow(cells: getCells(row));
-                        }).toList(),
-                      ))))
+                        // rows: renderRows.map((row) {
+                        //   return DataRow(cells: getCells(row));
+                        // }).toList(),
+                      )))
         ],
       ),
     );

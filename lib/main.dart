@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<CustomRow> tableRows = [
     CustomRow(
         index: 0,
-        depth: 1,
+        depth: 0,
         parentIndex: null,
         expanded: false,
         expandable: true,
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 1'),
     CustomRow(
         index: 1,
-        depth: 2,
+        depth: 1,
         parentIndex: 0,
         visible: false,
         expanded: false,
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 1.1'),
     CustomRow(
         index: 2,
-        depth: 2,
+        depth: 1,
         parentIndex: 0,
         visible: false,
         expanded: false,
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 1.2'),
     CustomRow(
         index: 3,
-        depth: 1,
+        depth: 0,
         parentIndex: null,
         visible: true,
         expanded: false,
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 2'),
     CustomRow(
         index: 4,
-        depth: 2,
+        depth: 1,
         parentIndex: 3,
         visible: false,
         expanded: false,
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 2.1'),
     CustomRow(
         index: 5,
-        depth: 3,
+        depth: 2,
         parentIndex: 4,
         visible: false,
         expanded: false,
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 2.1.1'),
     CustomRow(
         index: 6,
-        depth: 3,
+        depth: 2,
         parentIndex: 4,
         visible: false,
         expanded: false,
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 2.1.2'),
     CustomRow(
         index: 7,
-        depth: 3,
+        depth: 2,
         parentIndex: 4,
         visible: false,
         expanded: false,
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         label: 'Row 2.1.3'),
     CustomRow(
         index: 8,
-        depth: 2,
+        depth: 1,
         parentIndex: 3,
         visible: false,
         expanded: false,
@@ -107,14 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 9,
         parentIndex: null,
         visible: true,
-        depth: 1,
+        depth: 0,
         expanded: false,
         expandable: false,
         label: 'Row 3'),
     CustomRow(
         index: 10,
         parentIndex: null,
-        depth: 1,
+        depth: 0,
         expanded: false,
         expandable: true,
         visible: true,
@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
     CustomRow(
         index: 11,
         parentIndex: 10,
-        depth: 2,
+        depth: 1,
         expanded: false,
         expandable: false,
         visible: false,
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
     CustomRow(
         index: 12,
         parentIndex: 10,
-        depth: 2,
+        depth: 1,
         expanded: false,
         expandable: false,
         visible: false,
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 13,
         parentIndex: 10,
         visible: false,
-        depth: 2,
+        depth: 1,
         expanded: false,
         expandable: false,
         label: 'Row 4.3'),
@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 14,
         parentIndex: 10,
         visible: false,
-        depth: 2,
+        depth: 1,
         expanded: false,
         expandable: false,
         label: 'Row 4.4'),
@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 15,
         parentIndex: null,
         visible: true,
-        depth: 1,
+        depth: 0,
         expanded: false,
         expandable: true,
         label: 'Row 5'),
@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 16,
         parentIndex: 15,
         visible: false,
-        depth: 2,
+        depth: 1,
         expanded: false,
         expandable: true,
         label: 'Row 5.1'),
@@ -171,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 17,
         parentIndex: 16,
         visible: false,
-        depth: 3,
+        depth: 2,
         expanded: false,
         expandable: false,
         label: 'Row 5.1.1'),
@@ -179,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 18,
         parentIndex: 16,
         visible: false,
-        depth: 3,
+        depth: 2,
         expanded: false,
         expandable: false,
         label: 'Row 5.1.2'),
@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 19,
         parentIndex: 15,
         visible: false,
-        depth: 2,
+        depth: 1,
         expanded: false,
         expandable: true,
         label: 'Row 5.2'),
@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 20,
         parentIndex: 19,
         visible: false,
-        depth: 3,
+        depth: 2,
         expanded: false,
         expandable: false,
         label: 'Row 5.2.1'),
@@ -203,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: 21,
         parentIndex: 19,
         visible: false,
-        depth: 3,
+        depth: 2,
         expanded: false,
         expandable: false,
         label: 'Row 5.2.2'),
@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       tableRows[tappedIndex] = tableRows[tappedIndex]
           .copyWith(expanded: !tableRows[tappedIndex].expanded);
-     // debugPrint('tableRows[tappedIndex]: ${tableRows[tappedIndex].expanded}');
+      // debugPrint('tableRows[tappedIndex]: ${tableRows[tappedIndex].expanded}');
 
       if (tableRows[tappedIndex].expanded) {
         tableRows = tableRows.map((row) {
@@ -236,8 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
             tableRows[i] =
                 tableRows[i].copyWith(visible: false, expanded: false);
           } else {
-            tableRows[i] =
-                tableRows[i].copyWith(visible: false);
+            tableRows[i] = tableRows[i].copyWith(visible: false);
           }
         }
       }
@@ -246,13 +245,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  DataCell getIconButton(int index) {
-    return DataCell(IconButton(
-      icon: Icon(Icons.add),
-      onPressed: () {
-        expandChildren(index);
-      },
-    ));
+  DataCell getCellWithIconButton(int index, int depth, String label) {
+    return DataCell(Row(children: [
+      SizedBox(width: (20 * depth).toDouble()),
+      IconButton(
+        icon: Icon(Icons.add, size: 20),
+        onPressed: () {
+          expandChildren(index);
+        },
+      ),
+      SizedBox(width: 10),
+      Text(label)
+    ]));
   }
 
   @override
@@ -262,6 +266,23 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     super.initState();
+  }
+
+  List<DataCell> getCells(CustomRow row) {
+    final firstCell = row.expandable
+        ? getCellWithIconButton(
+            row.index, row.depth, '${row.label} - cell ${row.index}')
+        : DataCell(Row(
+            children: [
+              SizedBox(width: (20 * row.depth + 50).toDouble()), // 50 is size of icon button
+              Text('${row.label} - cell ${row.index}')
+            ],
+          ));
+    return [
+      firstCell,
+      ...List.generate(
+          9, (int index) => DataCell(Text('${row.label} - cell ${index + 1}')))
+    ];
   }
 
   @override
@@ -282,18 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 DataColumn(label: Text('Column $index')),
                             growable: false),
                         rows: renderRows.map((row) {
-                          return DataRow(cells: [
-                            row.expandable
-                                ? getIconButton(row.index)
-                                : DataCell(SizedBox(width: 0, height: 0)),
-                            ...List.generate(
-                                9,
-                                (int index) => DataCell(Row(children: [
-                                      SizedBox(
-                                          width: (20 * row.depth).toDouble()),
-                                      Text('${row.label} - cell ${index + 1}')
-                                    ])))
-                          ]);
+                          return DataRow(cells: getCells(row));
                         }).toList(),
                       ))))
         ],

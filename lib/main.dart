@@ -272,11 +272,11 @@ class _MyHomePageState extends State<MyHomePage> {
     final firstCell = row.expandable
         ? getCellWithIconButton(
           row.expanded,
-            row.index, row.depth, '${row.label} - cell ${row.index}')
+            row.index, row.depth, '${row.label} - cell 0')
         : DataCell(Row(
             children: [
               SizedBox(width: (20 * row.depth + 50).toDouble()), // 50 is size of icon button
-              Text('${row.label} - cell ${row.index}')
+              Text('${row.label} - cell 0')
             ],
           ));
     return [

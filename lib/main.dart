@@ -304,7 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         fontSize: 16.0,
                       )),
                   background: Image.asset(
-                    'assets/backPhoto3.jpg',
+                    'assets/back.png',
                     fit: BoxFit.cover,
                   )),
             ),

@@ -244,18 +244,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  DataCell getCellWithIconButton(bool isExpanded, int index, int depth, String label) {
-    return DataCell(SizedBox(width:  300, child: Row(children: [
-      SizedBox(width: (20 * depth).toDouble()),
-      IconButton(
-        icon: Icon(isExpanded ? Icons.remove : Icons.add, size: 20),
-        onPressed: () {
-          expandChildren(index);
-        },
-      ),
-      SizedBox(width: 10),
-      Text(label)
-    ])));
+  DataCell getCellWithIconButton(
+      bool isExpanded, int index, int depth, String label) {
+    return DataCell(SizedBox(
+        width: 300,
+        child: Row(children: [
+          SizedBox(width: (20 * depth).toDouble()),
+          IconButton(
+            icon: Icon(isExpanded ? Icons.remove : Icons.add, size: 20),
+            onPressed: () {
+              expandChildren(index);
+            },
+          ),
+          SizedBox(width: 10),
+          Text(label)
+        ])));
   }
 
   @override
@@ -270,11 +273,13 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DataCell> getCells(CustomRow row) {
     final firstCell = row.expandable
         ? getCellWithIconButton(
-          row.expanded,
-            row.index, row.depth, '${row.label} - cell 0')
-        : DataCell(SizedBox(width:  300, child: Row(
-            children: [
-              SizedBox(width: (20 * row.depth + 50).toDouble()), // 50 is size of icon button
+            row.expanded, row.index, row.depth, '${row.label} - cell 0')
+        : DataCell(SizedBox(
+            width: 300,
+            child: Row(children: [
+              SizedBox(
+                  width: (20 * row.depth + 50)
+                      .toDouble()), // 50 is size of icon button
               Text('${row.label} - cell 0')
             ]),
           ));
@@ -288,31 +293,43 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     // appBar: AppBar(title: Text('expandable table')),
-       body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 250.0,
-              floating: false,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Text("Карта пациента\nТут разные данные сворачиваются по скроллу\nФИО, пол, дата рождения, возраст, тел., номер АК",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      )),
-                  background: Image.asset(
-                    'assets/back.png',
-                    fit: BoxFit.cover,
-                  )),
+        // appBar: AppBar(title: Text('expandable table')),
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            bottom: AppBar(
+              title: Container(
+                height: 45,
+                child: TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Тут поиск по таблице'),
+                ),
+              ),
             ),
-          ];
-        },
-        body:
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+            expandedHeight: 300.0,
+            
+            floating: false,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              stretchModes: [StretchMode.zoomBackground],
+                centerTitle: true,
+                title: Center(child: Text(
+                    "Карта пациента\nТут разные данные сворачиваются по скроллу\nФИО, пол, дата рождения, возраст, тел., номер АК",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ))),
+                background: Image.asset(
+                  'assets/back.png',
+                  fit: BoxFit.cover,
+                )),
+          ),
+        ];
+      },
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               child: SingleChildScrollView(

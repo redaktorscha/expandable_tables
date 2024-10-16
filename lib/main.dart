@@ -245,11 +245,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  DataCell getCellWithIconButton(int index, int depth, String label) {
+  DataCell getCellWithIconButton(bool isExpanded, int index, int depth, String label) {
     return DataCell(Row(children: [
       SizedBox(width: (20 * depth).toDouble()),
       IconButton(
-        icon: Icon(Icons.add, size: 20),
+        icon: Icon(isExpanded ? Icons.remove : Icons.add, size: 20),
         onPressed: () {
           expandChildren(index);
         },
@@ -271,6 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DataCell> getCells(CustomRow row) {
     final firstCell = row.expandable
         ? getCellWithIconButton(
+          row.expanded,
             row.index, row.depth, '${row.label} - cell ${row.index}')
         : DataCell(Row(
             children: [

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -289,8 +288,31 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('expandable table')),
-      body: Row(
+     // appBar: AppBar(title: Text('expandable table')),
+       body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 250.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text("Карта пациента\nТут разные данные сворачиваются по скроллу\nФИО, пол, дата рождения, возраст, тел., номер АК",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
+                  background: Image.asset(
+                    'assets/backPhoto3.jpg',
+                    fit: BoxFit.cover,
+                  )),
+            ),
+          ];
+        },
+        body:
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               child: SingleChildScrollView(
@@ -309,7 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ))))
         ],
       ),
-    );
+    ));
   }
 }
 
